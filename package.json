@@ -1,0 +1,27 @@
+{
+  "name": "phone_book_backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AlyonaMarycheva/phone_book_backend.git"
+  },
+  "author": "Alya",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AlyonaMarycheva/phone_book_backend/issues"
+  },
+  "homepage": "https://github.com/AlyonaMarycheva/phone_book_backend#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.3"
+  }
+}
