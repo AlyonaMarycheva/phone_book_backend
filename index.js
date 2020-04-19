@@ -1,5 +1,6 @@
 const express = require('express')
 const app = express()
+app.use(express.json())
 let now = new Date()
 
 let persons = [
@@ -24,6 +25,21 @@ let persons = [
     "id": 4
   }
 ]
+
+app.post('/api/persons', (req, res) =>{
+  const newPerson = req.body
+
+  if (!newPerson.name || !newPerson.number) 
+    return res.status(400).json({error: "name or number missing"})
+  
+  if (persons.findIndex((person) => person.name === newPerson.name) !== -1)
+    return res.status(400).json({error: "this name already exists in phonebook"})
+
+  const id = Math.floor(Math.random() * 1000)
+  newPerson.id = id
+  persons = persons.concat(newPerson)
+  res.json(newPerson)
+})
 
 app.get('/api/persons', (req, res) => res.json(persons))
 
