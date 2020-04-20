@@ -1,5 +1,7 @@
 const express = require('express')
 const app = express()
+const cors = require('cors')
+app.use(cors())
 app.use(express.json())
 let now = new Date()
 
@@ -66,6 +68,6 @@ app.delete('/api/persons/:id', (req, res) => {
   res.status(204).end()
 })
 
-const PORT = 3001
-app.listen(PORT)
+const PORT = process.env.PORT || 3001
+app.listen(PORT, () => console.log(`Сервер запущен на ${PORT})`))
 
