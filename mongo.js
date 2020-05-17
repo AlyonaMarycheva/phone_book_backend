@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 
 const password =  process.argv[2]
 
-const url = `mongodb+srv://fullstack:${password}@cluster0-alqcj.mongodb.net/phone-book?retryWrites=true&w=majority`
+const url = `mongodb+srv://fullstack:fullstack000@cluster0-alqcj.mongodb.net/phone-book?retryWrites=true&w=majority`
 
 mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
 
@@ -11,7 +11,7 @@ const personSchema = new mongoose.Schema ({
     number: String
 })
 
-const Person = mongoose.model('Person', entrySchema)
+const Person = mongoose.model('Person', personSchema)
 
 if (process.argv.length > 3) {
                 
@@ -28,7 +28,7 @@ if (process.argv.length > 3) {
 
 else {
     Person.find({}).then(result => {
-        result.forEach(entry => console.log(entry))
+        result.forEach(person => console.log(person))
         mongoose.connection.close()
     })
 }

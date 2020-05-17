@@ -1,7 +1,11 @@
+require('dotenv').config()
+const Person = require('./models/person')
 const express = require('express')
 const app = express()
+
 const cors = require('cors')
 app.use(cors())
+
 app.use(express.json())
 app.use(express.static('build'))
 let now = new Date()
@@ -29,6 +33,13 @@ let persons = [
   }
 ]
 
+
+app.get('/api/persons', (req, res) => {
+  Person.find({}).then(people => {
+    res.json(people)
+  })
+})
+
 app.post('/api/persons', (req, res) =>{
   const newPerson = req.body
 
@@ -37,14 +48,15 @@ app.post('/api/persons', (req, res) =>{
   
   if (persons.findIndex((person) => person.name === newPerson.name) !== -1)
     return res.status(400).json({error: "this name already exists in phonebook"})
+  
+  const person = new Person ({
+    name: newPerson.name,
+    number: newPerson.number
+  })
 
-  const id = Math.floor(Math.random() * 1000)
-  newPerson.id = id
-  persons = persons.concat(newPerson)
-  res.json(newPerson)
+  person.save().then(savedNote => res.json(savedNote))
 })
 
-app.get('/api/persons', (req, res) => res.json(persons))
 
 app.get('/info', (req, res) => {
   res.send(
@@ -63,12 +75,12 @@ app.get('/api/persons/:id', (req, res) => {
     res.status(404).end()
 })
 
-app.delete('/api/persons/:id', (req, res) => {
-  id = Number(req.params.id)
-  persons = persons.filter(person => person.id !== id)
-  res.status(204).end()
+app.delete('/api/persons/:id', (req, res, next) => {
+  Person.findByIdAndRemove(req.params.id)
+  .then(() => res.status(204).end())
+  .catch(error => next(error))
 })
 
-const PORT = process.env.PORT || 3001
+const PORT = process.env.PORT
 app.listen(PORT, () => console.log(`Сервер запущен на ${PORT})`))
 
